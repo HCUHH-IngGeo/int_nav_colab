@@ -3,6 +3,7 @@ import plotly.graph_objects as go
 from pyproj import Proj, transform
 from sympy import re, sqrt
 from colour import Color
+import numpy as np
 
 mapbox_access_token = "pk.eyJ1IjoianN0ODkiLCJhIjoiY2sybjN0b2w2MG1tYjNjcGV5eGtlYjg5NyJ9.A9sSZPYzTYJL1YErdmwoKA"
 
@@ -12,8 +13,9 @@ def load_data(file, skiprows, transform_to_utm=True):
     df = pd.read_csv(file, skiprows=skiprows)
     # renaming some colums to get easier access on columns
     df.rename(columns={df.columns[0]: "GPST", df.columns[1]: "lat", df.columns[2]: "lon", df.columns[3]: 'alt',
-                       df.columns[6]: 'sdn', df.columns[7]: 'sde'},
-              inplace=True)
+                       df.columns[4]: 'Q', df.columns[5]: 'ns', df.columns[6]: 'sdn', df.columns[7]: 'sde',
+                       df.columns[8]: 'sdu', df.columns[9]: 'sdne', df.columns[10]: 'sdeu', df.columns[11]: 'sdun',
+                       df.columns[12]: 'age', df.columns[13]: 'ratio'}, inplace=True)
     # change datatype from string to timestamp by given format
     df.GPST = pd.to_datetime(df.GPST, format="%Y/%m/%d %H:%M:%S.%f")
     df.sde *= 3
@@ -34,6 +36,13 @@ def load_data(file, skiprows, transform_to_utm=True):
     df = transform_uncertainty(df)
 
     return df
+
+
+def get_quality_level(df):
+    df_q1 = len(df[df.Q == 1]) / len(df) * 100
+    df_q2 = len(df[df.Q == 2]) / len(df) * 100
+    df_q5 = len(df[df.Q == 5]) / len(df) * 100
+    return df_q1, df_q2, df_q5
 
 
 # to get the intersectionpoints easternvalue, we have to insert the curve of a first order (y=m*x+b) into the normal
@@ -116,18 +125,13 @@ def transform_uncertainty(df):
 def add_trace_and_uncertainty(df, figure, color_of_trajectory, name):
     uncertainty_color = Color(color_of_trajectory)
     uncertainty_color.set_hue(uncertainty_color.get_hue() + .15)
-    time = [time.strftime("%Y/%m/%d, %H:%M:%S") for time in df.GPST]
+
     figure.add_trace(go.Scattermapbox(
         lat=df.lat,
         lon=df.lon,
         mode='markers+lines',
         name=f'{name}',
-        line={'color': color_of_trajectory},
-        customdata=time,
-        hovertemplate=
-        "<b>%{customdata} </b><br><br>" +
-        "longitude: %{lon}<br>" +
-        "latitude: %{lat}<br>"
+        line={'color': color_of_trajectory}
     ))
 
     figure.add_trace(go.Scattermapbox(
@@ -145,3 +149,26 @@ def add_trace_and_uncertainty(df, figure, color_of_trajectory, name):
         name=f'{name} - right uncertainty',
         line={'color': f'{uncertainty_color.hex}'}
     ))
+
+
+def xcorr(x_red, y_red, normed=True, maxlags=None):
+    Nx = len(x_red)
+    if Nx != len(y_red):
+        raise ValueError('x and y must be equal length')
+
+    c = np.correlate(x_red, y_red, mode='full')
+
+    if normed:
+        c /= np.sqrt(np.dot(x_red, x_red) * np.dot(y_red, y_red))
+
+    if maxlags is None:
+        maxlags = Nx - 1
+
+    if maxlags >= Nx or maxlags < 1:
+        raise ValueError('maglags must be None or strictly '
+                         'positive < %d' % Nx)
+
+    lags = np.arange(-maxlags, maxlags + 1)
+    c = c[Nx - 1 - maxlags:Nx + maxlags]
+
+    return lags, c  # , a, b
