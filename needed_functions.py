@@ -374,6 +374,7 @@ def plotAcc_Kalib(data1, data2, data3, data4, data5, data6):
         mode='lines',
         name=f'ACC Z where Z = -9.81',
     ), row=3, col=2)
+    return figure
 
 
 def loadFile(file, start=-1, ende=-1):
