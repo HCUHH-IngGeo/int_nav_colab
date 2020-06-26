@@ -175,7 +175,7 @@ def xcorr(x_red, y_red, normed=True, maxlags=None):
     return lags, c  # , a, b
 
 def plotData(data):
-    figure = make_subplots(2, 1, shared_xaxes=True, print_grid=True)
+    figure = make_subplots(2, 1, shared_xaxes=True)
     figure.add_trace(go.Scatter(
         x=data.TIME,
         y=data.ACC_X,
@@ -221,7 +221,7 @@ def plotData(data):
 
 
 def plotAccData(data):
-    figure = make_subplots(3,1,shared_xaxes=True,print_grid=True)
+    figure = make_subplots(3,1,shared_xaxes=True)
     figure.add_trace(go.Scatter(
         x=data.TIME,
         y=data.ACC_X,
