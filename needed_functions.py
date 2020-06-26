@@ -174,6 +174,7 @@ def xcorr(x_red, y_red, normed=True, maxlags=None):
 
     return lags, c  # , a, b
 
+
 def plotData(data):
     figure = make_subplots(2, 1, shared_xaxes=True)
     figure.add_trace(go.Scatter(
@@ -221,7 +222,7 @@ def plotData(data):
 
 
 def plotAccData(data):
-    figure = make_subplots(3,1,shared_xaxes=True)
+    figure = make_subplots(3, 1, shared_xaxes=True)
     figure.add_trace(go.Scatter(
         x=data.TIME,
         y=data.ACC_X,
@@ -244,33 +245,135 @@ def plotAccData(data):
     ), row=3, col=1)
     return figure
 
-'''def plotAccDataSub(data1, data2, data3, data4, data5, data6):
-    cols = 2
-    rows = 3
-    fig, axs = plt.subplots(rows, cols)
 
-    fig.set_size_inches(14, 12)
-    # data[['ACC_X', 'ACC_Y', 'ACC_Z']]
-    axs[0, 0].set_title('Acceleration X-positiv')
-    axs[0, 1].set_title('Acceleration X-negativ')
-    axs[1, 0].set_title('Acceleration Y-positiv')
-    axs[1, 1].set_title('Acceleration Y-negativ')
-    axs[2, 0].set_title('Acceleration Z-positiv')
-    axs[2, 1].set_title('Acceleration Z-negativ')
+def plotAcc_Kalib(data1, data2, data3, data4, data5, data6):
+    figure = make_subplots(3, 2, shared_xaxes=True)
 
-    data1[['ACC_X', 'ACC_Y', 'ACC_Z']].plot(ax=axs[0, 0])
-    data2[['ACC_X', 'ACC_Y', 'ACC_Z']].plot(ax=axs[0, 1])
-    data3[['ACC_X', 'ACC_Y', 'ACC_Z']].plot(ax=axs[1, 0])
-    data4[['ACC_X', 'ACC_Y', 'ACC_Z']].plot(ax=axs[1, 1])
-    data5[['ACC_X', 'ACC_Y', 'ACC_Z']].plot(ax=axs[2, 0])
-    data6[['ACC_X', 'ACC_Y', 'ACC_Z']].plot(ax=axs[2, 1])
-    # axs[0].set_ylabe1l('Acceleration [m/s^2]')
+    figure.add_trace(go.Scatter(
+        x=data1.TIME,
+        y=data1.ACC_X,
+        mode='lines',
+        name=f'ACC X where X = 9.81',
+    ), row=1, col=1)
 
-    # data[['GYR_X', 'GYR_Y', 'GYR_Z']].plot(ax=axs[1])
-    # axs[1].set_xlabel('Time [ms]')
-    # axs[1].set_ylabel('Rotation rate [rad/ms]')
+    figure.add_trace(go.Scatter(
+        x=data1.TIME,
+        y=data1.ACC_Y,
+        mode='lines',
+        name=f'ACC Y where X = 9.81',
+    ), row=1, col=1)
 
-    plt.show()'''
+    figure.add_trace(go.Scatter(
+        x=data1.TIME,
+        y=data1.ACC_Z,
+        mode='lines',
+        name=f'ACC Z where X = 9.81',
+    ), row=1, col=1)
+
+    figure.add_trace(go.Scatter(
+        x=data2.TIME,
+        y=data2.ACC_X,
+        mode='lines',
+        name=f'ACC X where X = -9.81',
+    ), row=1, col=2)
+
+    figure.add_trace(go.Scatter(
+        x=data2.TIME,
+        y=data2.ACC_Y,
+        mode='lines',
+        name=f'ACC Y where X = -9.81',
+    ), row=1, col=2)
+
+    figure.add_trace(go.Scatter(
+        x=data2.TIME,
+        y=data2.ACC_Z,
+        mode='lines',
+        name=f'ACC Z where X = -9.81',
+    ), row=1, col=2)
+
+    figure.add_trace(go.Scatter(
+        x=data3.TIME,
+        y=data3.ACC_X,
+        mode='lines',
+        name=f'ACC X where Y = 9.81',
+    ), row=2, col=1)
+
+    figure.add_trace(go.Scatter(
+        x=data3.TIME,
+        y=data3.ACC_Y,
+        mode='lines',
+        name=f'ACC Y where Y = 9.81',
+    ), row=2, col=1)
+
+    figure.add_trace(go.Scatter(
+        x=data3.TIME,
+        y=data3.ACC_Z,
+        mode='lines',
+        name=f'ACC Z where Y = 9.81',
+    ), row=2, col=1)
+
+    figure.add_trace(go.Scatter(
+        x=data4.TIME,
+        y=data4.ACC_X,
+        mode='lines',
+        name=f'ACC X where Y = -9.81',
+    ), row=2, col=2)
+
+    figure.add_trace(go.Scatter(
+        x=data4.TIME,
+        y=data4.ACC_Y,
+        mode='lines',
+        name=f'ACC Y where Y = -9.81',
+    ), row=2, col=2)
+
+    figure.add_trace(go.Scatter(
+        x=data4.TIME,
+        y=data4.ACC_Z,
+        mode='lines',
+        name=f'ACC Z where Y = -9.81',
+    ), row=2, col=2)
+
+    figure.add_trace(go.Scatter(
+        x=data5.TIME,
+        y=data5.ACC_X,
+        mode='lines',
+        name=f'ACC X where Z = 9.81',
+    ), row=3, col=1)
+
+    figure.add_trace(go.Scatter(
+        x=data5.TIME,
+        y=data5.ACC_Y,
+        mode='lines',
+        name=f'ACC Y where Z = 9.81',
+    ), row=3, col=1)
+
+    figure.add_trace(go.Scatter(
+        x=data5.TIME,
+        y=data5.ACC_Z,
+        mode='lines',
+        name=f'ACC Z where Z = 9.81',
+    ), row=3, col=1)
+
+    figure.add_trace(go.Scatter(
+        x=data6.TIME,
+        y=data6.ACC_X,
+        mode='lines',
+        name=f'ACC X where Z = -9.81',
+    ), row=3, col=2)
+
+    figure.add_trace(go.Scatter(
+        x=data6.TIME,
+        y=data6.ACC_Y,
+        mode='lines',
+        name=f'ACC Y where Z = -9.81',
+    ), row=3, col=2)
+
+    figure.add_trace(go.Scatter(
+        x=data6.TIME,
+        y=data6.ACC_Z,
+        mode='lines',
+        name=f'ACC Z where Z = -9.81',
+    ), row=3, col=2)
 
 
 def loadFile(file, start=-1, ende=-1):
