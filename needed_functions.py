@@ -247,7 +247,7 @@ def plotAccData(data):
 
 
 def plotAcc_Kalib(data1, data2, data3, data4, data5, data6):
-    figure = make_subplots(3, 2, shared_xaxes=True)
+    figure = make_subplots(3, 2)
 
     figure.add_trace(go.Scatter(
         x=data1.TIME,
