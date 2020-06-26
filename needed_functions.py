@@ -177,42 +177,42 @@ def xcorr(x_red, y_red, normed=True, maxlags=None):
 def plotData(data):
     figure = make_subplots(2, 1, shared_xaxes=True)
     figure.add_trace(go.Scatter(
-        x=data.TIME,
+        x=data.index,
         y=data.ACC_X,
         mode='lines',
         name=f'Acceleration X',
     ), row=1, col=1)
 
     figure.add_trace(go.Scatter(
-        x=data.TIME,
+        x=data.index,
         y=data.ACC_Y,
         mode='lines',
         name=f'Acceleration Y',
     ), row=1, col=1)
 
     figure.add_trace(go.Scatter(
-        x=data.TIME,
+        x=data.index,
         y=data.ACC_Z,
         mode='lines',
         name=f'Acceleration Z',
     ), row=1, col=1)
 
     figure.add_trace(go.Scatter(
-        x=data.TIME,
+        x=data.index,
         y=data.GYR_X,
         mode='lines',
         name=f'Rotation X',
     ), row=2, col=1)
 
     figure.add_trace(go.Scatter(
-        x=data.TIME,
+        x=data.index,
         y=data.GYR_Y,
         mode='lines',
         name=f'Rotation Y',
     ), row=2, col=1)
 
     figure.add_trace(go.Scatter(
-        x=data.TIME,
+        x=data.index,
         y=data.GYR_Z,
         mode='lines',
         name=f'Rotation Z',
