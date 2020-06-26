@@ -172,3 +172,113 @@ def xcorr(x_red, y_red, normed=True, maxlags=None):
     c = c[Nx - 1 - maxlags:Nx + maxlags]
 
     return lags, c  # , a, b
+
+def plotData(data):
+    figure = make_subplots(2, 1, shared_xaxes=True, print_grid=True)
+    figure.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.ACC_X,
+        mode='lines',
+        name=f'Acceleration X',
+    ), row=1, col=1)
+
+    figure.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.ACC_Y,
+        mode='lines',
+        name=f'Acceleration Y',
+    ), row=1, col=1)
+
+    figure.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.ACC_Z,
+        mode='lines',
+        name=f'Acceleration Z',
+    ), row=1, col=1)
+
+    figure.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.GYR_X,
+        mode='lines',
+        name=f'Rotation X',
+    ), row=2, col=1)
+
+    figure.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.GYR_Y,
+        mode='lines',
+        name=f'Rotation Y',
+    ), row=2, col=1)
+
+    figure.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.GYR_Z,
+        mode='lines',
+        name=f'Rotation Z',
+    ), row=2, col=1)
+    return figure
+
+
+def plotAccData(data):
+    figure = make_subplots(3,1,shared_xaxes=True,print_grid=True)
+    figure.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.ACC_X,
+        mode='lines',
+        name=f'Acceleration X',
+    ), row=1, col=1)
+
+    figure.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.ACC_Y,
+        mode='lines',
+        name=f'Acceleration Y',
+    ), row=2, col=1)
+
+    figure.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.ACC_Z,
+        mode='lines',
+        name=f'Acceleration Z',
+    ), row=3, col=1)
+    return figure
+
+'''def plotAccDataSub(data1, data2, data3, data4, data5, data6):
+    cols = 2
+    rows = 3
+    fig, axs = plt.subplots(rows, cols)
+
+    fig.set_size_inches(14, 12)
+    # data[['ACC_X', 'ACC_Y', 'ACC_Z']]
+    axs[0, 0].set_title('Acceleration X-positiv')
+    axs[0, 1].set_title('Acceleration X-negativ')
+    axs[1, 0].set_title('Acceleration Y-positiv')
+    axs[1, 1].set_title('Acceleration Y-negativ')
+    axs[2, 0].set_title('Acceleration Z-positiv')
+    axs[2, 1].set_title('Acceleration Z-negativ')
+
+    data1[['ACC_X', 'ACC_Y', 'ACC_Z']].plot(ax=axs[0, 0])
+    data2[['ACC_X', 'ACC_Y', 'ACC_Z']].plot(ax=axs[0, 1])
+    data3[['ACC_X', 'ACC_Y', 'ACC_Z']].plot(ax=axs[1, 0])
+    data4[['ACC_X', 'ACC_Y', 'ACC_Z']].plot(ax=axs[1, 1])
+    data5[['ACC_X', 'ACC_Y', 'ACC_Z']].plot(ax=axs[2, 0])
+    data6[['ACC_X', 'ACC_Y', 'ACC_Z']].plot(ax=axs[2, 1])
+    # axs[0].set_ylabe1l('Acceleration [m/s^2]')
+
+    # data[['GYR_X', 'GYR_Y', 'GYR_Z']].plot(ax=axs[1])
+    # axs[1].set_xlabel('Time [ms]')
+    # axs[1].set_ylabel('Rotation rate [rad/ms]')
+
+    plt.show()'''
+
+
+def loadFile(file, start=-1, ende=-1):
+    Position_1 = pd.read_csv(file, sep=';')
+    if start == -1:
+        return Position_1[:ende]
+    elif ende == -1:
+        return Position_1[start:]
+    elif ende == -1 and start == -1:
+        return Position_1
+    else:
+        return Position_1[start:ende]
