@@ -387,3 +387,72 @@ def loadFile(file, start=-1, ende=-1):
         return Position_1
     else:
         return Position_1[start:ende]
+
+
+def accvelposplot(data):
+    fig = make_subplots(3, 1)
+
+    figure.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.ACC_X,
+        mode='lines',
+        name=f'ACC X',
+    ), row=1, col=1)
+
+    figure.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.ACC_Y,
+        mode='lines',
+        name=f'ACC Y',
+    ), row=1, col=1)
+
+    figure.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.ACC_Z,
+        mode='lines',
+        name=f'ACC Z',
+    ), row=1, col=1)
+
+    figure.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.V_X,
+        mode='lines',
+        name=f'VX',
+    ), row=2, col=1)
+
+    figure.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.V_Y,
+        mode='lines',
+        name=f'VY',
+    ), row=2, col=1)
+
+    figure.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.V_Z,
+        mode='lines',
+        name=f'VZ',
+    ), row=2, col=1)
+
+    figure.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.P_X,
+        mode='lines',
+        name=f'PX',
+    ), row=3, col=1)
+
+    figure.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.P_Y,
+        mode='lines',
+        name=f'PY',
+    ), row=3, col=1)
+
+    figure.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.P_Z,
+        mode='lines',
+        name=f'PZ',
+    ), row=3, col=1)
+
+    return fig
