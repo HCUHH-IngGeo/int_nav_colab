@@ -456,3 +456,68 @@ def accvelposplot(data):
     ), row=3, col=1)
 
     return fig
+
+
+def applyParams(data, params, offs):
+    x = data['ACC_X']
+    y = data['ACC_Y']
+    z = data['ACC_Z']
+
+    trueX = (x - offs[0]) / params[0][0]
+    trueY = (y - offs[1]) / params[1][1]
+    trueZ = (z - offs[2]) / params[2][2]
+
+    df = data.copy()
+
+    df['ACC_X'] = pd.Series(trueX, index=x.index)
+    df['ACC_Y'] = pd.Series(trueY, index=y.index)
+    df['ACC_Z'] = pd.Series(trueZ, index=z.index)
+
+    return df
+
+def plotAngles(data):
+    fig = make_subplots(2, 1)
+
+    fig.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.GYR_X,
+        mode='lines',
+        name=f'GYR X',
+    ), row=1, col=1)
+
+    fig.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.GYR_Y,
+        mode='lines',
+        name=f'GYR Y',
+    ), row=1, col=1)
+
+    fig.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.GYR_Z,
+        mode='lines',
+        name=f'GYR Z',
+    ), row=1, col=1)
+
+    fig.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.RA_X,
+        mode='lines',
+        name=f'RA X',
+    ), row=2, col=1)
+
+    fig.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.RA_Y,
+        mode='lines',
+        name=f'RA Y',
+    ), row=2, col=1)
+
+    fig.add_trace(go.Scatter(
+        x=data.TIME,
+        y=data.RA_Z,
+        mode='lines',
+        name=f'RA Z',
+    ), row=2, col=1)
+
+    return fig
