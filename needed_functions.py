@@ -5,6 +5,7 @@ from pyproj import Proj, transform
 from sympy import re, sqrt
 from colour import Color
 import numpy as np
+from datetime import timedelta
 
 mapbox_access_token = "pk.eyJ1IjoianN0ODkiLCJhIjoiY2sybjN0b2w2MG1tYjNjcGV5eGtlYjg5NyJ9.A9sSZPYzTYJL1YErdmwoKA"
 
@@ -538,6 +539,7 @@ def load_baro(file, skiprows):
 
     del pr['value']
     pr['unix_time'] = pd.to_datetime(pr['timestamp'], unit='ms')
+    pr['unix_time'] -= timedelta(days=1, hours=21, minutes=26, seconds=41.235000)
     pr['pressure'] = x
     del pr['timestamp']
     return pr
