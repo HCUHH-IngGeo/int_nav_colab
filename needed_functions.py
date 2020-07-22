@@ -540,6 +540,12 @@ def load_baro(file, skiprows):
     del pr['value']
     pr['unix_time'] = pd.to_datetime(pr['timestamp'], unit='ms')
     pr['unix_time'] -= timedelta(days=1, hours=21, minutes=36, seconds=41.235000)
+
+    pr = pr.set_index(pr.unix_time)
+    del pr['unix_time']
+    pr = pr.resample('100ms').mean().interpolate()
+    pr['unix_time'] = pr.index
+    pr.reset_index(drop=True, inplace=True)
     pr['pressure'] = x
     del pr['timestamp']
     return pr
