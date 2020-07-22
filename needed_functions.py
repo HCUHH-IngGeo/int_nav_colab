@@ -39,10 +39,10 @@ def load_data(file, skiprows, transform_to_utm=True):
     df = add_uncertainty(df)
     df = transform_uncertainty(df)
 
-    df = df.set_index(df.GPST)
-    df = df.resample('1000ms').mean().interpolate()
-    df['GPST']=df.index
-    df=df.reset_index(drop=True)
+    #df = df.set_index(df.GPST)
+    #df = df.resample('1000ms').mean().interpolate()
+    #df['GPST']=df.index
+    #df=df.reset_index(drop=True)
 
     return df
 
