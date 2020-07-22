@@ -22,6 +22,8 @@ def load_data(file, skiprows, transform_to_utm=True):
     df.GPST = pd.to_datetime(df.GPST, format="%Y/%m/%d %H:%M:%S.%f")
     df.sde *= 3
     df.sdn *= 3
+
+
     # since the coordinates are located in wgs85 (lat,lon,alt) we want to transform them to utm
     if transform_to_utm:
         inProj = Proj('epsg:4326')  # projection for wgs84
@@ -36,6 +38,11 @@ def load_data(file, skiprows, transform_to_utm=True):
 
     df = add_uncertainty(df)
     df = transform_uncertainty(df)
+
+    df = df.set_index(df.GPST)
+    df = df.resample('1000ms').mean().interpolate()
+    df['GPST']=df.index
+    df=df.reset_index(drop=True)
 
     return df
 
@@ -552,5 +559,7 @@ def load_baro(file, skiprows):
 
 
 if __name__ == '__main__':
+    gps = load_data('data/r10.pos', 23)
+    print(gps)
     baro = load_baro("data/log.txt", 2)
     print(baro)
