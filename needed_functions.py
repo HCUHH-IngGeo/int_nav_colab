@@ -475,6 +475,7 @@ def applyParams(data, params, offs):
 
     return df
 
+
 def plotAngles(data):
     fig = make_subplots(2, 1)
 
@@ -521,3 +522,27 @@ def plotAngles(data):
     ), row=2, col=1)
 
     return fig
+
+
+def load_baro(file, skiprows):
+    df = pd.read_csv(file, skiprows=skiprows, delimiter="|")
+    pr = df[df['sensorName'] == 'LPS22H Barometer Sensor'].reset_index(drop=True)
+    del pr['statusId']
+    del pr['sensorName']
+
+    pr = pr[['timestamp', 'value']]
+    vals = pr['value']
+    vals = vals.str.replace('[', '')
+    vals = vals.str.replace(']', '')
+    x = [float(i) for i in vals]
+
+    del pr['value']
+    pr['unix_time'] = pd.to_datetime(pr['timestamp'], unit='ms')
+    pr['pressure'] = x
+    del pr['timestamp']
+    return pr
+
+
+if __name__ == '__main__':
+    baro = load_baro("data/log.txt", 2)
+    print(baro)
